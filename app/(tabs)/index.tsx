@@ -249,25 +249,25 @@ export default function HomeScreen() {
 
   const header = (
     <View style={styles.header}>
-      <View style={[styles.toggleGroup, { backgroundColor: colors.tabBarBackground }]}>
+      <View style={styles.toggleGroup}>
         <TouchableOpacity
           onPress={() => setViewMode("swipe")}
-          style={[styles.toggleBtn, viewMode === "swipe" && { backgroundColor: colors.cardBackground }]}
+          style={styles.toggleBtn}
         >
           <Ionicons
-            name="phone-portrait-outline"
-            size={20}
-            color={viewMode === "swipe" ? colors.reference : colors.tabBarInactive}
+            name="albums"
+            size={28}
+            color={viewMode === "swipe" ? colors.tabBarActive : colors.tabBarInactive}
           />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setViewMode("list")}
-          style={[styles.toggleBtn, viewMode === "list" && { backgroundColor: colors.cardBackground }]}
+          style={styles.toggleBtn}
         >
           <Ionicons
-            name="list-outline"
-            size={20}
-            color={viewMode === "list" ? colors.reference : colors.tabBarInactive}
+            name="list-circle"
+            size={28}
+            color={viewMode === "list" ? colors.tabBarActive : colors.tabBarInactive}
           />
         </TouchableOpacity>
       </View>
@@ -365,7 +365,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     padding: 20,
-    paddingTop: 0,
+    paddingTop: 6,
   },
   listHeader: {
     flexDirection: "row",

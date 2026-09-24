@@ -2,20 +2,31 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   Alert,
+  ImageBackground,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
 } from "react-native";
+import { useAuth } from "../contexts/AuthContext";
 import { supabase } from "../lib/supabase";
 
 export default function ResetPasswordScreen() {
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  // The root layout turns the email link into a session before routing here.
+  const { session } = useAuth();
 
   const handleResetPassword = async () => {
+    if (!session) {
+      Alert.alert(
+        "Error",
+        "Please open the reset link from your email on this device."
+      );
+      return;
+    }
+
     if (!newPassword || newPassword.length < 6) {
       Alert.alert("Error", "Password must be at least 6 characters");
       return;
@@ -40,7 +51,11 @@ export default function ResetPasswordScreen() {
   };
 
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      source={require("../assets/images/bg-dark.png")}
+      style={styles.container}
+      resizeMode="cover"
+    >
       <Text style={styles.title}>Reset Password</Text>
       <Text style={styles.subtitle}>Enter your new password</Text>
 
@@ -63,53 +78,64 @@ export default function ResetPasswordScreen() {
           {loading ? "Resetting..." : "Reset Password"}
         </Text>
       </TouchableOpacity>
-    </View>
+    </ImageBackground>
   );
 }
+
+// Matches the dark palette used on the auth screen.
+const colors = {
+  background: "#191F2F",
+  cardBackground: "#1D2230",
+  cardBorder: "#443A37",
+  text: "#E8E6E3",
+  accent: "#DE9D36",
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     padding: 20,
-    backgroundColor: "#1a1d23",
+    backgroundColor: colors.background,
   },
   title: {
-    fontSize: 36,
+    fontSize: 40,
     textAlign: "center",
     marginBottom: 8,
-    color: "#E8E6E3",
+    color: colors.text,
     fontFamily: "AveriaSerifLibre_300Light",
   },
   subtitle: {
     fontSize: 14,
     textAlign: "center",
-    marginBottom: 50,
-    color: "#D4A574",
+    marginBottom: 24,
+    color: colors.accent,
     textTransform: "uppercase",
     letterSpacing: 2,
     fontFamily: "Inter_400Regular",
+    lineHeight: 20,
   },
   input: {
-    backgroundColor: "#2a2d35",
+    backgroundColor: colors.cardBackground,
     padding: 15,
     borderRadius: 12,
-    marginBottom: 15,
+    marginBottom: 24,
     fontSize: 16,
-    color: "#E8E6E3",
+    color: colors.text,
     borderWidth: 1,
-    borderColor: "#443A37",
+    borderColor: colors.cardBorder,
     fontFamily: "Inter_400Regular",
   },
   button: {
-    backgroundColor: "#D4A574",
+    backgroundColor: colors.accent,
     padding: 18,
     borderRadius: 12,
     alignItems: "center",
     marginTop: 10,
+    marginBottom: 20,
   },
   buttonText: {
-    color: "#1a1d23",
+    color: colors.background,
     fontSize: 16,
     fontFamily: "Inter_600SemiBold",
   },
